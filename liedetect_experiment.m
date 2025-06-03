@@ -1,23 +1,23 @@
 % =======================
-% function[] = cred3fact_experiment()
-% Credibility judgements for websites with 
-% - true/false information
-% - visual aesthetics mimicking high / low quality media outlets
-% - high / low quality language style
+% function[] = liedetect_experiment()
 % ========================
 
 %%  
-function[] = cred3fact_experiment()
+function[] = liedetect_experiment()
 
 clear all
+testrun = 0;
+if testrun
+    timeOut = 1;
+else
+    timeOut = inf;
+end
 
 % set up paths, responses, monitor, ...
 addpath('./func'); 
 stimpath = '../stim/';
-stimlist = importdata([stimpath, 'stimuli_file_list.mat']);
-
-[vp, msgInstruct, responseHand, rkeys] = get_experimentInfo();
-MonitorSelection = 3y; % 6 in EEG, 3 in Gregor's office
+[vp, msgmapping, responseHand, ~] = get_experimentInfo();
+MonitorSelection = 3; % 6 in EEG, 3 in Gregor's office
 MonitorSpecs = getMonitorSpecs(MonitorSelection); % subfunction, gets specification for monitor
 
 %% PTB         
@@ -34,40 +34,79 @@ VpixxMarkerZero = @(windowPointer) Screen('FillRect', windowPointer, [0 0 0], [0
 setVpixxMarker  = @(windowPointer, value) Screen('FillRect', windowPointer, [value 0 0], [0 0 1 1]); % viewpixx 
 
 %% Response buttons
+rkeys    = {'y', 'x', 'n', 'm'};
+numkeys  = {'1!', '2@', '3#', '4$', '5%'};
 KbName('UnifyKeyNames');
-TastenCodes  = KbName({[rkeys], 'ESCAPE'}); % [89, 88, 67, 86, 27]
-TastenVector = zeros(1,256); TastenVector(TastenCodes) = 1;
-timeOut = 1; % one second
+ZahlenCodes = KbName(numkeys);
+TastenCodes    = KbName({[numkeys], 'ESCAPE'}); % numbers and ESC
+NumberVector   = zeros(1,256); NumberVector(TastenCodes) = 1;
+TastenCodes    = KbName({[rkeys], 'ESCAPE'}); % response keys and ESC
+ResponseVector = zeros(1,256); ResponseVector(TastenCodes) = 1;
 
 %% stimulus size
 centCircleSize  = 0.05; % Size of central fixation dot
 centCirclePixel = centCircleSize * MonitorSpecs.PixelsPerDegree;
 textSize = 30;
+targetRect = [0 0 40 40];
+vspacing = 20;
+yTargetPositions = [1:10]*(targetRect(3)+vspacing);
 
 %% presentation parameters
 ISI                = [1.5 2]; % in seconds
-StimulusTime       = 4; % seconds
-nCatchTrials       = [10 14];  % [min, max]
-diffCatch          = [25 60]; % [min max]
+StimulusTime       = 1;  % seconds
 BreakBetweenBlocks = 10; % in seconds
+nblocks            = 2;  % number of blocks 
+ 
+%% stimuli
+characters = {'character1', 'character2', 'character3', 'character4'};
+char_g     = {'', '', '', ''};
+places     = {'place1', 'place2', 'place3'};
+places_g   = {'ein', 'eine', 'eine'};
+weapons    = {'weapon1', 'weapon2', 'weapon3', 'weapon4', 'weapon5'};
+weapons_g  = {'ein', 'eine', 'ein', 'eine', 'eine'};
+allChoices = {characters, places, weapons}; % randomize order?
+folders    = {'./stim/characters/', './stim/places/', './stim/weapons/'};
 
-% % use these for testing:
-% ISI           = [0.1 0.15]; % in seconds
-% StimulusTime  = 0.1; % seconds
-% nCatchTrials  = [10 14];  % [min, max]
-% diffCatch     = [25 60]; % [min max]
-% BreakBetweenBlocks = 3; % in seconds
+msgChar   = 'Der Mörder ist ';
+msgPlace  = 'Der Tatort war ';
+msgWeap   = 'Der Mörder benutzte ';
+msgTrial  = {msgChar, msgPlace, msgWeap};
+
+tPos = cell(1, numel(allChoices));
+for ch = 1:numel(allChoices)
+    for item = 1:numel(allChoices{ch})
+    [tmpim, ~, tmpalpha] = imread([folders{ch}, allChoices{ch}{item}, '.png']);
+    tmpim(:,:,4) = tmpalpha; % add alpha channel
+    im{ch, item} = tmpim;
+    end
+    xTargetPositions =  [1:numel(allChoices{ch})]*targetRect(3)*2;
+    tPos{ch} = CenterRectOnPoint(targetRect, xTargetPositions', ...
+                             repmat(yTargetPositions((ch-1)*2+2), 1, numel(xTargetPositions))');
+end
+tPosPicked = CenterRectOnPoint(targetRect, [[1:numel(allChoices)]*targetRect(3)*2]', ...
+                             repmat(yTargetPositions(9), 1, numel(allChoices))');
+
+condition  = char([repmat({'character'}, 1, numel(characters)), ... 
+             repmat({'place'}, 1, numel(places)), ...
+             repmat({'weapon'}, 1, numel(weapons))]');
+filename   = char([characters, places, weapons]);
+gender     = char([char_g, places_g, weapons_g]);
 
 %% messages
 msgStart  = 'Bitte warten Sie, bis die Untersucherin die EEG-Aufnahme gestartet hat.\n\n Das Experiment beginnt bald.';
 msgEnd    = '--- Ende des Experiments ---\n\nBitte warten Sie, bis die EEG-Aufnahme gestoppt wurde.';
 msgBreak  = 'Ruhen Sie sich aus (10 s)';
-msgAnswer = 'Wie glaubwürdig?';
+msgInstruct1 = 'Wähle einen Character:\n';
+msgInstruct2 = 'Wähle einen Ort:\n';
+msgInstruct3 = 'Wähle eine Waffe:\n';
+msgPicked1   = 'Du hast gewählt:\n';
+msgPicked2   = 'Starte das Spiel mit einer Antworttaste!\n';
+msgChoose = {msgInstruct1, msgInstruct2, msgInstruct3};
 
 %% results file
-cred3F      = [];
-timeString  = datestr(clock,30);  
-outfilename = ['sub-', vp, '_task-credibilityJudgement.mat'];
+liedetect      = [];
+timeString  = datestr(clock,30);
+outfilename = ['sub-', vp, '_task-lieDetector.mat'];
 
 try
     Priority(1);
@@ -81,19 +120,15 @@ try
     [xCenter, yCenter] = RectCenter(MonitorDimension);
     hz = Screen('NominalFrameRate', win);
     frame_s = (1/hz);
-
+        
     %% prepare blocks, images, and textures
-    % 6 source articles x 8 conditions x 10 repetitions = 480 trials
-    % 10 blocks with 48 trials each, plus catch trials
-    allBlocks    = get_cred3fBlocks(stimlist, nCatchTrials, diffCatch, ISI, frame_s);
-    
     % compute fliptime for target
     PTBStimulusTime = StimulusTime - (frame_s * 0.5);
- 
+
     % Construct and start response queue
-    KbQueueCreate([],TastenVector);
+    KbQueueCreate([],ResponseVector);
     KbQueueStart;
-    
+     
     % show startup screen and wait for key press (investigator)
     KbQueueFlush;        
     Screen('TextSize', win, textSize);
@@ -101,6 +136,18 @@ try
     VpixxMarkerZero(win);
     Screen('Flip', win);
     KbQueueWait();
+    
+    % show startup screen and wait for key press (participant)
+    KbQueueFlush;        
+    Screen('TextSize', win, textSize);
+    DrawFormattedText(win, msgmapping, 'center', 'center', [255 255 255]);
+    VpixxMarkerZero(win);
+    Screen('Flip', win);
+    KbQueueWait();
+    
+    
+    %checkESC;
+    KbQueueStop;
 
     % show blank for smooth transition to next page
     VpixxMarkerZero(win);
@@ -108,35 +155,65 @@ try
        
     % results table
     fullTable = [];
+    
    %% loop over blocks
     protocol = [];
-    for nblock = 1:length(allBlocks)
-        
-        % read block definition, prepare stimuli
-        ablock = allBlocks{nblock};
-        [~, textureMat] = get_images_cred3f(ablock, win); 
-        
-        % show instruction
+    for nblock = 1:nblocks
+        KbQueueCreate([], NumberVector);
+        KbQueueStart;
+        KbEventFlush();
+
+        %% choose character, place, weapon
+        for k = 1:3
+        numberOfStimuli = sum(~cellfun(@isempty, im(k, :)));
+        texture = double(numberOfStimuli);
+            for m = 1:numberOfStimuli
+            texture(k, m) = Screen('MakeTexture', win, im{k, m});
+            end
         Screen('TextSize', win, textSize);
-        DrawFormattedText(win, msgInstruct, 'center', 'center', [255 255 255]);
-        VpixxMarkerZero(win);
+        DrawFormattedText(win, msgChoose{k}, targetRect(3), yTargetPositions((k-1)*2+1)+targetRect(3)/2, [255 255 255]);
+        Screen('DrawTextures', win, texture(k, :),[], tPos{k}');  
         KbQueueFlush;    
+        t0 = Screen('Flip', win, [], 1);
+            keyCode = 0;
+            while ~ismember(keyCode, ZahlenCodes(1:numberOfStimuli))
+            [keyCode, ~] = get_timeOutResponse(t0, timeOut);
+            end
+        picked(k) = find(ismember(ZahlenCodes, keyCode));
+        end
+        KbQueueStop;
+
+        %% show chosen character, place, weapon
+        % Construct and start new response queue
+        KbQueueCreate([], ResponseVector);
+        KbQueueStart;
+    
+        DrawFormattedText(win, msgPicked1, targetRect(3), yTargetPositions(8)+targetRect(3)/2, [255 255 255]);
+        for n = 1:3
+            tex = Screen('MakeTexture', win, im{n, picked(n)});
+            Screen('DrawTexture', win, tex,[], tPosPicked(n,:));  
+        end
+        DrawFormattedText(win, msgPicked2, targetRect(3), yTargetPositions(10)+targetRect(3)/2, [255 255 255]);
+        KbQueueFlush;
         Screen('Flip', win);
-        KbQueueWait();
         
-        % show 1s blank screen for smooth page change
-        VpixxMarkerZero(win);
-        Screen('Flip', win);
-        WaitSecs(1);
-
-        % set TargetEnd for first trial so that it starts immediately
-        TargetEnd = GetSecs + frame_s - PTBStimulusTime;
-
+        %% construct condition matrix
+        gamepick = zeros(size(condition,1), 1);
+        gamepick([picked(1), picked(2) + numel(characters), ...
+                  picked(3) + numel(characters) + numel(places)])=1;
+        block = repmat(nblock, numel(gamepick), 1);
+        T = table(block, condition, filename, gender, gamepick);
+        T = repmat(T, 2, 1);
+        conmat = T(randperm(size(T,1)),:);
+        
+        KbQueueWait();
+      
+        
         % clear protocolMatrix     
         protocolTable = [];
 
         %% loop over trials    
-        for ntrial = 1:size(ablock, 1)
+        for ntrial = 1:size(T, 1)
 
             % check if ESC is pressed and stop if yes
             checkESC;
@@ -144,48 +221,35 @@ try
             % draw and show fixation
             Screen('gluDisk', win, [0 0 0], xCenter, yCenter, centCirclePixel);
             VpixxMarkerZero(win);
-            [FixationStart] = Screen('Flip', win, TargetEnd);
-            
-            % draw and show target stimulus
-            Screen('DrawTexture', win, textureMat(ntrial));  
+            [FixationStart] = Screen('Flip', win);
+ 
+            % prepare and show text
+            wcon = find(ismember({'character', 'place', 'weapon'}, deblank(conmat.condition(ntrial,:))));
+            showText = [msgTrial{wcon}, deblank(conmat.gender(ntrial,:)), ' ', deblank(conmat.filename(ntrial,:)), '.'];
+            DrawFormattedText(win, showText, 'center', 'center', [255 255 255]);
             setVpixxMarker(win, 1);
-            [TargetStart] = Screen('Flip', win, FixationStart + ablock.ISI(ntrial));
-
-            % draw and show first frame of fixation for timing measures
-            Screen('gluDisk', win, [0 0 0], xCenter, yCenter, centCirclePixel);
-            VpixxMarkerZero(win);
-            [TargetEnd] = Screen('Flip', win, TargetStart + PTBStimulusTime);
-
-            % keep track of presentation times   
-            fixtime    = TargetStart - FixationStart;
-            targettime = TargetEnd - TargetStart;
+            KbQueueFlush;
+            [TargetStart] = Screen('Flip', win, FixationStart + ISI(1) + (ISI(2)-ISI(1)).*rand(1)); % random uniform in ISI interval
             
-            % in catch trial: show question mark and get response
-            if ablock.catch(ntrial)
-               DrawFormattedText(win, msgAnswer, 'center', 'center', [255 255 255]);
-               VpixxMarkerZero(win);
-               [QuestionStart] = Screen('Flip', win, TargetStart + PTBStimulusTime);
-               [keyCode, responseTime] = get_timeOutResponse(QuestionStart, timeOut);
-                if (~isnan(responseTime)) % ensure same trial length in trials with and without responses
-                     WaitSecs(timeOut - responseTime);
-                end
-                TargetEnd = TargetEnd + frame_s - PTBStimulusTime; 
-            else
-                keyCode = NaN; responseTime = NaN;
-            end
+            % get reponse
+            [empkeyCode, RT] = get_timeOutResponse(TargetStart, timeOut);
+            
+            % after keypress, wait for 0.5 sec
+            WaitSecs(0.5);
 
             % compute presentation times
-            ftime(ntrial) = fixtime;
-            ttime(ntrial) = targettime;
-            kcode(ntrial) = keyCode;
-            rtime(ntrial) = responseTime;
+            kCode(ntrial) = empkeyCode;
+            rtime(ntrial) = RT;
         end
         
         % copy all trial information into one table
-        expdata = table(ftime', ttime', kcode', rtime', 'VariableNames', {'cueTime', 'targetTime', 'keyCode', 'rTime'});
-        blcks   = table(zeros(48,1) + nblock, [1:48]', 'VariableNames', {'block', 'trial'});
-        protocolTable = [blcks, ablock, expdata];
-            
+        %expdata = table(ftime', ttime', kcode', rtime', 'VariableNames', {'cueTime', 'targetTime', 'keyCode', 'rTime'});
+        %blcks   = table(zeros(48,1) + nblock, [1:48]', 'VariableNames', {'block', 'trial'});
+        kCode = table(kCode', 'VariableNames', {'kCode'});
+        rtime = table(rtime', 'VariableNames', {'rtime'});
+        protocolTable = [conmat, kCode, rtime];
+        clear kCode rtime
+        
         % write protocol table 
         fullTable = [fullTable; protocolTable];
         clear protocolTable
@@ -196,7 +260,7 @@ try
 
             % show break message
             WaitSecs(2);
-            if nblock < numel(allBlocks)
+            if nblock < nblocks
                 Screen('TextSize', win, textSize);
                 DrawFormattedText(win, msgBreak, 'center', 'center', [255 255 255]);
                 VpixxMarkerZero(win);
@@ -205,19 +269,20 @@ try
             end
 
         WaitSecs(1);
+        KbQueueStop;
     end
 
 % write results and supplementary information to structure
-cred3F.experiment         = 'task-credibilityJudgements';
-cred3F.participant        = vp;
-cred3F.date               = timeString;
-cred3F.protocol           = fullTable;
-cred3F.response_hand      = responseHand;
-cred3F.monitor_refresh    = hz;
-cred3F.MonitorDimension   = MonitorDimension;
-cred3F.VisionRecorderWorkspace   = 'M1-10-10-EOG.wrksp';
+liedetect.experiment         = 'task-lieDetection';
+liedetect.participant        = vp;
+liedetect.date               = timeString;
+liedetect.protocol           = fullTable;
+liedetect.response_hand      = responseHand;
+liedetect.yes_key            = KbName('y');
+liedetect.monitor_refresh    = hz;
+liedetect.MonitorDimension   = MonitorDimension;
 
-save(outfilename, 'cred3F');
+save(outfilename, 'liedetect');
 
 % show ending message
 KbQueueFlush; 
