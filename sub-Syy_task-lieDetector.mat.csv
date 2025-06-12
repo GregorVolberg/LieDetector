@@ -1,0 +1,97 @@
+block,role,condition,gamepick,feature_nr,feature,item_nr,item_text,keyCode,rtime,vp,time_stamp,response_hand,yes_key
+1,offender,self     ,0,2,age         ,2,"Sie sind 23 Jahre alt.",89,0.763981299998704,Syy,20250612T130516,left,89
+1,offender,self     ,0,3,body_height ,1,"Sie sind Linkshänder.",88,0.64429779999773,Syy,20250612T130516,left,89
+1,offender,character,1,2,yellow      ,2,"Der Täter hatte etwas in gelb an.",89,0.488446700008353,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,2,poison      ,4,"Es wurde Gift benutzt, um dem Opfer Schaden zuzufügen.",88,1.24549960000149,Syy,20250612T130516,left,89
+1,offender,character,0,3,green       ,7,"Die Person in grün ist schuldig.",89,1.10243100000662,Syy,20250612T130516,left,89
+1,offender,character,0,1,blue        ,4,"Der Mörder trug etwas in blau.",88,1.25814900000114,Syy,20250612T130516,left,89
+1,offender,character,0,4,pink        ,6,"War der Täter in pink gekleidet?",89,0.872021900009713,Syy,20250612T130516,left,89
+1,offender,place    ,0,4,house       ,3,"Die Tat hat im Haus des Opfers stattgefunden.",88,0.508678700003657,Syy,20250612T130516,left,89
+1,offender,self     ,0,3,body_height ,1,"Sie sind Linkshänder.",89,0.675371100005577,Syy,20250612T130516,left,89
+1,offender,weapon   ,1,1,baseball_bat,2,"Die Tatwaffe könnte ein Baseballschläger gewesen sein.",88,0.913193799991859,Syy,20250612T130516,left,89
+1,offender,self     ,0,2,age         ,2,"Sie sind 23 Jahre alt.",89,0.487256100008381,Syy,20250612T130516,left,89
+1,offender,self     ,0,3,body_height ,1,"Sie sind Linkshänder.",88,0.488821899998584,Syy,20250612T130516,left,89
+1,offender,self     ,0,4,eye_color   ,3,"Sie sind 166 cm groß.",89,0.573034999993979,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,4,weapon4     ,3,"Es wurde weapon4 benutzt, um das Opfer zu ermorden.",88,1.07277199999953,Syy,20250612T130516,left,89
+1,offender,character,1,2,yellow      ,2,"Der Täter hatte etwas in gelb an.",89,0.608788700003061,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,4,weapon4     ,3,"Es wurde weapon4 benutzt, um das Opfer zu ermorden.",88,0.710596100005205,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,4,weapon4     ,3,"Es wurde weapon4 benutzt, um das Opfer zu ermorden.",89,1.23881720000645,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,3,cactus      ,1,"War die Tatwaffe ein Kaktus?",88,1.23194729999523,Syy,20250612T130516,left,89
+1,offender,weapon   ,1,1,baseball_bat,2,"Die Tatwaffe könnte ein Baseballschläger gewesen sein.",89,0.734415899991291,Syy,20250612T130516,left,89
+1,offender,place    ,0,2,mall        ,1,"Waren Sie zur Tatzeit im Einkaufszentrum?",88,0.744756500003859,Syy,20250612T130516,left,89
+1,offender,place    ,1,1,park        ,4,"Haben Sie sich zur Tatzeit im Park aufgehalten?",89,0.739687899986166,Syy,20250612T130516,left,89
+1,offender,place    ,0,2,mall        ,1,"Waren Sie zur Tatzeit im Einkaufszentrum?",89,0.576627699992969,Syy,20250612T130516,left,89
+1,offender,character,0,4,pink        ,6,"War der Täter in pink gekleidet?",88,0.660758899990469,Syy,20250612T130516,left,89
+1,offender,place    ,1,1,park        ,4,"Haben Sie sich zur Tatzeit im Park aufgehalten?",89,0.675592400002643,Syy,20250612T130516,left,89
+1,offender,character,0,4,pink        ,6,"War der Täter in pink gekleidet?",88,0.978124500004924,Syy,20250612T130516,left,89
+1,offender,place    ,1,1,park        ,4,"Haben Sie sich zur Tatzeit im Park aufgehalten?",89,0.740827299989178,Syy,20250612T130516,left,89
+1,offender,self     ,0,1,handeness   ,4,"Sie haben rote Augen.",88,0.71902799999225,Syy,20250612T130516,left,89
+1,offender,place    ,0,3,bus_stop    ,2,"Der Täter war zur Tatzeit an der Bushaltestelle.",89,0.88846809999086,Syy,20250612T130516,left,89
+1,offender,self     ,0,4,eye_color   ,3,"Sie sind 166 cm groß.",89,0.95111110000289,Syy,20250612T130516,left,89
+1,offender,self     ,0,4,eye_color   ,3,"Sie sind 166 cm groß.",88,1.19955920000211,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,3,cactus      ,1,"War die Tatwaffe ein Kaktus?",89,0.77566330000991,Syy,20250612T130516,left,89
+1,offender,character,0,3,green       ,7,"Die Person in grün ist schuldig.",88,1.05734289999236,Syy,20250612T130516,left,89
+1,offender,place    ,0,4,house       ,3,"Die Tat hat im Haus des Opfers stattgefunden.",88,1.2558907999919,Syy,20250612T130516,left,89
+1,offender,self     ,0,1,handeness   ,4,"Sie haben rote Augen.",89,0.9000526000018,Syy,20250612T130516,left,89
+1,offender,place    ,0,3,bus_stop    ,2,"Der Täter war zur Tatzeit an der Bushaltestelle.",89,0.924681099990266,Syy,20250612T130516,left,89
+1,offender,character,0,1,blue        ,4,"Der Mörder trug etwas in blau.",88,1.40209049999248,Syy,20250612T130516,left,89
+1,offender,self     ,0,2,age         ,2,"Sie sind 23 Jahre alt.",89,0.745685999994748,Syy,20250612T130516,left,89
+1,offender,self     ,0,1,handeness   ,4,"Sie haben rote Augen.",88,0.657733600004576,Syy,20250612T130516,left,89
+1,offender,place    ,0,2,mall        ,1,"Waren Sie zur Tatzeit im Einkaufszentrum?",89,0.584638999993331,Syy,20250612T130516,left,89
+1,offender,character,1,2,yellow      ,2,"Der Täter hatte etwas in gelb an.",88,0.620223699996131,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,3,cactus      ,1,"War die Tatwaffe ein Kaktus?",89,0.486043900004006,Syy,20250612T130516,left,89
+1,offender,character,0,1,blue        ,4,"Der Mörder trug etwas in blau.",88,0.501827400003094,Syy,20250612T130516,left,89
+1,offender,weapon   ,1,1,baseball_bat,2,"Die Tatwaffe könnte ein Baseballschläger gewesen sein.",89,0.476488899992546,Syy,20250612T130516,left,89
+1,offender,place    ,0,4,house       ,3,"Die Tat hat im Haus des Opfers stattgefunden.",88,0.557847199990647,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,2,poison      ,4,"Es wurde Gift benutzt, um dem Opfer Schaden zuzufügen.",89,0.575466800000868,Syy,20250612T130516,left,89
+1,offender,place    ,0,3,bus_stop    ,2,"Der Täter war zur Tatzeit an der Bushaltestelle.",88,0.54965619998984,Syy,20250612T130516,left,89
+1,offender,character,0,3,green       ,7,"Die Person in grün ist schuldig.",89,0.777405000000726,Syy,20250612T130516,left,89
+1,offender,weapon   ,0,2,poison      ,4,"Es wurde Gift benutzt, um dem Opfer Schaden zuzufügen.",89,0.796710700000403,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,3,cactus      ,1,"War die Tatwaffe ein Kaktus?",89,1.26106000000436,Syy,20250612T130516,left,89
+2,attestor,place    ,0,2,mall        ,1,"Waren Sie zur Tatzeit im Einkaufszentrum?",89,1.29661510000005,Syy,20250612T130516,left,89
+2,attestor,character,0,4,pink        ,6,"War der Täter in pink gekleidet?",89,0.909816400002455,Syy,20250612T130516,left,89
+2,attestor,character,1,2,yellow      ,2,"Der Täter hatte etwas in gelb an.",89,0.846720300003653,Syy,20250612T130516,left,89
+2,attestor,character,0,3,green       ,7,"Die Person in grün ist schuldig.",89,0.715094700004556,Syy,20250612T130516,left,89
+2,attestor,character,0,1,blue        ,4,"Der Mörder trug etwas in blau.",89,1.13538609999523,Syy,20250612T130516,left,89
+2,attestor,place    ,0,4,house       ,3,"Die Tat hat im Haus des Opfers stattgefunden.",88,1.03455790001317,Syy,20250612T130516,left,89
+2,attestor,self     ,0,2,age         ,2,"Sie sind 23 Jahre alt.",89,1.03151099999377,Syy,20250612T130516,left,89
+2,attestor,place    ,0,2,mall        ,1,"Waren Sie zur Tatzeit im Einkaufszentrum?",88,0.936960499995621,Syy,20250612T130516,left,89
+2,attestor,character,0,4,pink        ,6,"War der Täter in pink gekleidet?",89,0.894234700012021,Syy,20250612T130516,left,89
+2,attestor,self     ,0,3,body_height ,1,"Sie sind Linkshänder.",88,0.916118000008282,Syy,20250612T130516,left,89
+2,attestor,place    ,0,3,bus_stop    ,2,"Der Täter war zur Tatzeit an der Bushaltestelle.",89,0.760496399991098,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,3,cactus      ,1,"War die Tatwaffe ein Kaktus?",88,0.681163000001106,Syy,20250612T130516,left,89
+2,attestor,weapon   ,1,1,baseball_bat,2,"Die Tatwaffe könnte ein Baseballschläger gewesen sein.",89,0.521407599997474,Syy,20250612T130516,left,89
+2,attestor,weapon   ,1,1,baseball_bat,2,"Die Tatwaffe könnte ein Baseballschläger gewesen sein.",88,0.653504100002465,Syy,20250612T130516,left,89
+2,attestor,self     ,0,4,eye_color   ,3,"Sie sind 166 cm groß.",89,0.796477699987008,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,4,weapon4     ,3,"Es wurde weapon4 benutzt, um das Opfer zu ermorden.",88,0.852773999999044,Syy,20250612T130516,left,89
+2,attestor,self     ,0,4,eye_color   ,3,"Sie sind 166 cm groß.",89,0.672345800005132,Syy,20250612T130516,left,89
+2,attestor,place    ,0,4,house       ,3,"Die Tat hat im Haus des Opfers stattgefunden.",88,0.573233800008893,Syy,20250612T130516,left,89
+2,attestor,place    ,1,1,park        ,4,"Haben Sie sich zur Tatzeit im Park aufgehalten?",89,0.654269799997564,Syy,20250612T130516,left,89
+2,attestor,self     ,0,3,body_height ,1,"Sie sind Linkshänder.",88,0.685510199997225,Syy,20250612T130516,left,89
+2,attestor,self     ,0,2,age         ,2,"Sie sind 23 Jahre alt.",89,0.699042800013558,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,2,poison      ,4,"Es wurde Gift benutzt, um dem Opfer Schaden zuzufügen.",88,0.925784199993359,Syy,20250612T130516,left,89
+2,attestor,character,0,1,blue        ,4,"Der Mörder trug etwas in blau.",88,0.662395799998194,Syy,20250612T130516,left,89
+2,attestor,self     ,0,1,handeness   ,4,"Sie haben rote Augen.",89,0.786805600000662,Syy,20250612T130516,left,89
+2,attestor,self     ,0,4,eye_color   ,3,"Sie sind 166 cm groß.",88,0.884884099999908,Syy,20250612T130516,left,89
+2,attestor,place    ,0,3,bus_stop    ,2,"Der Täter war zur Tatzeit an der Bushaltestelle.",89,0.511429799997131,Syy,20250612T130516,left,89
+2,attestor,place    ,0,4,house       ,3,"Die Tat hat im Haus des Opfers stattgefunden.",88,0.810179199994309,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,2,poison      ,4,"Es wurde Gift benutzt, um dem Opfer Schaden zuzufügen.",89,0.675182599996333,Syy,20250612T130516,left,89
+2,attestor,self     ,0,3,body_height ,1,"Sie sind Linkshänder.",88,0.655882599996403,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,4,weapon4     ,3,"Es wurde weapon4 benutzt, um das Opfer zu ermorden.",89,0.712478700006614,Syy,20250612T130516,left,89
+2,attestor,character,0,4,pink        ,6,"War der Täter in pink gekleidet?",88,0.625921800005017,Syy,20250612T130516,left,89
+2,attestor,character,0,3,green       ,7,"Die Person in grün ist schuldig.",89,0.679424700007075,Syy,20250612T130516,left,89
+2,attestor,character,0,1,blue        ,4,"Der Mörder trug etwas in blau.",88,3.90211640000052,Syy,20250612T130516,left,89
+2,attestor,place    ,1,1,park        ,4,"Haben Sie sich zur Tatzeit im Park aufgehalten?",89,1.18096040000091,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,2,poison      ,4,"Es wurde Gift benutzt, um dem Opfer Schaden zuzufügen.",88,1.00445300000138,Syy,20250612T130516,left,89
+2,attestor,character,0,3,green       ,7,"Die Person in grün ist schuldig.",89,1.02058419999958,Syy,20250612T130516,left,89
+2,attestor,weapon   ,1,1,baseball_bat,2,"Die Tatwaffe könnte ein Baseballschläger gewesen sein.",88,0.799450100006652,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,4,weapon4     ,3,"Es wurde weapon4 benutzt, um das Opfer zu ermorden.",89,0.890819599997485,Syy,20250612T130516,left,89
+2,attestor,place    ,0,2,mall        ,1,"Waren Sie zur Tatzeit im Einkaufszentrum?",89,0.762330199999269,Syy,20250612T130516,left,89
+2,attestor,self     ,0,2,age         ,2,"Sie sind 23 Jahre alt.",88,0.736355900007766,Syy,20250612T130516,left,89
+2,attestor,character,1,2,yellow      ,2,"Der Täter hatte etwas in gelb an.",89,1.0496329000016,Syy,20250612T130516,left,89
+2,attestor,place    ,0,3,bus_stop    ,2,"Der Täter war zur Tatzeit an der Bushaltestelle.",88,0.993629899996449,Syy,20250612T130516,left,89
+2,attestor,weapon   ,0,3,cactus      ,1,"War die Tatwaffe ein Kaktus?",89,0.692138600003091,Syy,20250612T130516,left,89
+2,attestor,character,1,2,yellow      ,2,"Der Täter hatte etwas in gelb an.",88,0.82411649999267,Syy,20250612T130516,left,89
+2,attestor,place    ,1,1,park        ,4,"Haben Sie sich zur Tatzeit im Park aufgehalten?",89,1.19094030000269,Syy,20250612T130516,left,89
+2,attestor,self     ,0,1,handeness   ,4,"Sie haben rote Augen.",88,0.661977399999159,Syy,20250612T130516,left,89
+2,attestor,self     ,0,1,handeness   ,4,"Sie haben rote Augen.",89,0.44141889999446,Syy,20250612T130516,left,89

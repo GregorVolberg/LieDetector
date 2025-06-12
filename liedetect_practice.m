@@ -1,9 +1,9 @@
 % =======================
-% function[] = liedetect_experiment()
+% function[] = liedetect_practice()
 % ========================
 
 %%  
-function[] = liedetect_experiment()
+function[] = liedetect_practice()
 
 clear all
 testrun =0;
@@ -55,13 +55,14 @@ yTargetPositions = [1:10]*(targetRect(3)+vspacing);
 ISI                = [1.5 2.5]; % in seconds
 StimulusTime       = 1;  % seconds
 BreakBetweenBlocks = 10; % in seconds
-nblocks            = 8;  % number of blocks 
+nblocks            = 2;  % number of blocks 
  
 %% stimuli
 [places, characters, weapons, character_items, weapon_items, place_items] = get_crime_stimuli_and_items();
 allChoices     = {places.png, characters.png, weapons.png}; % randomize order?
 folders        = {'./stim/places/', './stim/characters/', './stim/weapons/'};
 
+%strrep(txt, '#', 'grün')
 %% stimulus positions
 tPos = cell(1, numel(allChoices));
 for ch = 1:numel(allChoices)
@@ -86,8 +87,8 @@ featureC   = char([places.con, characters.con, weapons.con, self.con]);
 picked(1)  = Sample(1:numel(places)); % place is drawn
 
 %% messages
-msgStart  = 'Bitte warte, bis die Untersucherin die EEG-Aufnahme gestartet hat.\n\n Das Experiment beginnt bald.';
-msgEnd    = '--- Ende des Experiments ---\n\nBitte warte, bis die EEG-Aufnahme gestoppt wurde.';
+% msgStart  = 'Bitte warte, bis die Untersucherin die EEG-Aufnahme gestartet hat.\n\n Das Experiment beginnt bald.';
+% msgEnd    = '--- Ende des Experiments ---\n\nBitte warte, bis die EEG-Aufnahme gestoppt wurde.';
 msgBreak  = 'Ruhe dich aus (10 s)';
 msgInstruct1 = ['Der Mord hat ', places.text{picked(1)}, ' stattgefunden.\n'];
 msgInstruct2 = 'Wähle einen Character:\n';
@@ -122,13 +123,13 @@ try
     KbQueueCreate([],ResponseVector);
     KbQueueStart;
      
-    % show startup screen and wait for key press (investigator)
-    KbQueueFlush;        
-    Screen('TextSize', win, textSize);
-    DrawFormattedText(win, msgStart, 'center', 'center', [255 255 255]);
-    VpixxMarkerZero(win);
-    Screen('Flip', win);
-    KbQueueWait();
+    % % show startup screen and wait for key press (investigator)
+    % KbQueueFlush;        
+    % Screen('TextSize', win, textSize);
+    % DrawFormattedText(win, msgStart, 'center', 'center', [255 255 255]);
+    % VpixxMarkerZero(win);
+    % Screen('Flip', win);
+    % KbQueueWait();
     
     % show startup screen and wait for key press (participant)
     KbQueueFlush;        
@@ -146,7 +147,7 @@ try
        
     % results table
     fullTable = [];
-        KbQueueCreate([], NumberVector);
+            KbQueueCreate([], NumberVector);
         KbQueueStart;
         KbEventFlush();
 
@@ -200,7 +201,6 @@ try
         end
         txtblock = ['Deine Rolle in diesem Abschnitt: ', roleC.text, '. ', msgPicked2];
         DrawFormattedText(win, txtblock, targetRect(3), yTargetPositions(10)+targetRect(3)/2, [255 255 255]);
-        VpixxMarkerZero(win);
         KbQueueFlush;
         Screen('Flip', win);
         
@@ -211,49 +211,66 @@ try
                   picked(3) + numel(places.png) + numel(characters.png)])=1;
         block = repmat(nblock, numel(gamepick), 1);
         feature_nr = [1:4, 1:4, 1:4, 1:4]';
-        item_nr    = [randsample(numel(place_items), 4, false);
-                      randsample(numel(character_items), 4, false);
-                      randsample(numel(weapon_items),4, false);
-                      randsample(numel(self.text),4, false)];
         
-        T = table(block, role, condition, gamepick, feature_nr, featureC, item_nr);
-        T = renamevars(T, "featureC", "feature");
+        tmpconmat = table(block, condition, featureC, feature_nr, gamepick);
+        clear conmat items
         
         %% prepare text
-        for trl = 1:size(T, 1)
-            con = deblank(T.condition(trl,:));
+        for trl = 1:size(tmpconmat, 1)
+            con = deblank(tmpconmat.condition(trl,:));
             switch con
                 case 'place'
-                   items{trl} = strrep(char(place_items(T.item_nr(trl))), '#', char(places.text(T.feature_nr(trl))));
+                   items{trl} = strrep(char(Sample(place_items)), '#', char(places.text(tmpconmat.feature_nr(trl))));
                 case 'character'
-                   items{trl} = strrep(char(character_items(T.item_nr(trl))), '#', char(characters.text(T.feature_nr(trl))));
+                   items{trl} = strrep(char(Sample(character_items)), '#', char(characters.text(tmpconmat.feature_nr(trl))));
                 case 'weapon'
-                   items{trl} = strrep(char(weapon_items(T.item_nr(trl))), '#', char(weapons.text(T.feature_nr(trl))));
+                   items{trl} = strrep(char(Sample(weapon_items)), '#', char(weapons.text(tmpconmat.feature_nr(trl))));
                 case 'self'
-                   items{trl} = self.text{T.feature_nr(T.item_nr(trl))};
+                   items{trl} = self.text{tmpconmat.feature_nr(trl)};
             end
         end
-        %items  = items';
-        tmpconmat = [T items'];
-        tmpconmat = renamevars(tmpconmat, "Var8", "item_text");
-        tmpconmat = repmat(tmpconmat, 3, 1);
+        items  = items';
+        conmat = [tmpconmat items];
+        
 
-        if mod(nblock, 2) == 1
-        conmat = tmpconmat(randperm(size(tmpconmat,1)),:);
-        elseif mod(nblock, 2) == 0
-        conmat = conmat(randperm(size(conmat,1)),:); % use the same items in attestor condition
-        conmat.block = repmat(nblock, numel(conmat.block),1);
-        conmat.role  = repmat('attestor', size(conmat.role, 1),1);
-        end
+        % for practice
+        sel1 = find(conmat.gamepick==1 & ismember(cellstr(conmat.condition), 'character'));
+        sel2 = find(conmat.gamepick==0 & ismember(cellstr(conmat.condition), 'weapon'));
+        sel3 = find(ismember(cellstr(conmat.condition), 'self'));
+        
+        blck(1).conmat = conmat([sel1(1), sel2(1), sel3(1)],:);
+        blck(1).items  = items([sel1(1), sel2(1), sel3(1)],:);
+        blck(1).expected_response = ['x','y','y'];
+        blck(1).feedback_f = {'Falsch! Als Täter sollst du korrekte Aussagen verneinen.', ...
+                              'Falsch! Als Täter sollst du inkorrekte Aussagen bejahen.', ...
+                              'Falsch! Als Täter sollst du Fragen zu dir richtig beantworten.'};
+        blck(1).feedback_c = {'Richtig! Als Täter sollst du korrekte Aussagen verneinen.', ...
+                              'Richtig! Als Täter sollst du inkorrekte Aussagen bejahen.', ...
+                              'Richtig! Als Täter sollst du Fragen zu dir richtig beantworten.'};
+
+        sel1 = find(conmat.gamepick==0 & ismember(cellstr(conmat.condition), 'place'));
+        sel2 = find(conmat.gamepick==1 & ismember(cellstr(conmat.condition), 'character'));
+        sel3 = find(ismember(cellstr(conmat.condition), 'self'));
+
+        blck(2).conmat     = conmat([sel1(1), sel2(1), sel3(2)],:);
+        blck(2).items      = items([sel1(1), sel2(1), sel3(2)],:);
+        blck(2).expected_response = ['x','y','x'];
+        blck(2).feedback_f = {'Falsch! Als Zeuge sollst du inkorrekte Aussagen verneinen.', ...
+                              'Falsch! Als Zeuge sollst du korrekte Aussagen bejahen.', ...
+                              'Falsch! Als Zeuge sollst du Fragen zu dir falsch beantworten.'};
+        blck(2).feedback_c = {'Richtig! Als Zeuge sollst du inkorrekte Aussagen verneinen.', ...
+                              'Richtig! Als Zeuge sollst du korrekte Aussagen bejahen.', ...
+                              'Richtig! Als Zeuge sollst du Fragen zu dir falsch beantworten.'};
+
 
 
         KbQueueWait();
               
         % clear protocolMatrix     
         protocolTable = [];
-
+        
         %% loop over trials    
-        for ntrial = 1:size(conmat, 1)
+        for ntrial = 1:size(blck(nblock).conmat, 1)
 
             % check if ESC is pressed and stop if yes
             checkESC;
@@ -264,31 +281,44 @@ try
             [FixationStart] = Screen('Flip', win);
  
             % prepare and show text
-            DrawFormattedText(win, conmat.item_text{ntrial}, 'center', 'center', [255 255 255]);
+            %wcon = find(ismember({'character', 'place', 'weapon'}, deblank(conmat.condition(ntrial,:))));
+            %showText = [msgTrial{wcon}, deblank(conmat.gender(ntrial,:)), ' ', deblank(conmat.filename(ntrial,:)), '.'];
+            DrawFormattedText(win, blck(nblock).conmat.Var6{ntrial}, 'center', 'center', [255 255 255]);
             setVpixxMarker(win, 1);
             KbQueueFlush;
             [TargetStart] = Screen('Flip', win, FixationStart + ISI(1) + (ISI(2)-ISI(1)).*rand(1)); % random uniform in ISI interval
             
             % get reponse
             [empkeyCode, RT] = get_timeOutResponse(TargetStart, timeOut);
+            if empkeyCode == KbName(blck(nblock).expected_response(ntrial))
+                DrawFormattedText(win, blck(nblock).feedback_c{ntrial}, 'center', 'center', [0 255 0]);
+            else
+                DrawFormattedText(win, blck(nblock).feedback_f{ntrial}, 'center', 'center', [255 0 0]);
+            end
             
+            Screen('Flip', win, TargetStart + RT + 0.5); % random uniform in ISI interval
             % after keypress, wait for 0.5 sec
-            WaitSecs(0.5);
+            WaitSecs(2);
 
             % compute presentation times
             kCode(ntrial) = empkeyCode;
             rtime(ntrial) = RT;
+
+            
+
         end
         
-        % copy all trial information into one table
-        kCode = table(kCode', 'VariableNames', {'keyCode'});
-        rtime = table(rtime', 'VariableNames', {'rtime'});
-        protocolTable = [conmat, kCode, rtime];
-        clear kCode rtime
-        
-        % write protocol table 
-        fullTable = [fullTable; protocolTable];
-        clear protocolTable
+        % % copy all trial information into one table
+        % %expdata = table(ftime', ttime', kcode', rtime', 'VariableNames', {'cueTime', 'targetTime', 'keyCode', 'rTime'});
+        % %blcks   = table(zeros(48,1) + nblock, [1:48]', 'VariableNames', {'block', 'trial'});
+        % kCode = table(kCode', 'VariableNames', {'kCode'});
+        % rtime = table(rtime', 'VariableNames', {'rtime'});
+        % protocolTable = [conmat, kCode, rtime];
+        % clear kCode rtime
+        % 
+        % % write protocol table 
+        % fullTable = [fullTable; protocolTable];
+        % clear protocolTable
         
         % show blank screen
         VpixxMarkerZero(win);
@@ -308,31 +338,25 @@ try
         KbQueueStop;
     end
 
-% write results and supplementary information to structure
-liedetect.experiment         = 'task-lieDetection';
-liedetect.participant        = vp;
-liedetect.date               = timeString;
-liedetect.protocol           = fullTable;
-liedetect.response_hand      = responseHand;
-liedetect.yes_key            = KbName('y');
-liedetect.monitor_refresh    = hz;
-liedetect.MonitorDimension   = MonitorDimension;
-
-save(outfilename, 'liedetect');
-
-outtable = [fullTable table(repmat(vp, size(fullTable,1),1), 'VariableNames', {'vp'}) ...
-           table(repmat(timeString, size(fullTable,1),1), 'VariableNames', {'time_stamp'}) ...
-           table(repmat(responseHand, size(fullTable,1),1), 'VariableNames', {'response_hand'}) ...
-           table(repmat(KbName('y'), size(fullTable,1),1), 'VariableNames', {'yes_key'})];
-writetable(outtable, [outfilename, '.csv']);
-
-% show ending message
-KbQueueFlush; 
-Screen('TextSize', win, textSize);
-DrawFormattedText(win, msgEnd, 'center', 'center', [255 255 255]);
-VpixxMarkerZero(win);
-Screen('Flip', win);
-KbQueueWait();     
+% % write results and supplementary information to structure
+% liedetect.experiment         = 'task-lieDetection';
+% liedetect.participant        = vp;
+% liedetect.date               = timeString;
+% liedetect.protocol           = fullTable;
+% liedetect.response_hand      = responseHand;
+% liedetect.yes_key            = KbName('y');
+% liedetect.monitor_refresh    = hz;
+% liedetect.MonitorDimension   = MonitorDimension;
+% 
+% save(outfilename, 'liedetect');
+% 
+% % show ending message
+% KbQueueFlush; 
+% Screen('TextSize', win, textSize);
+% DrawFormattedText(win, msgEnd, 'center', 'center', [255 255 255]);
+% VpixxMarkerZero(win);
+% Screen('Flip', win);
+% KbQueueWait();     
 
 catch
     Screen('CloseAll');
